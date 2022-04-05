@@ -17,7 +17,9 @@ function App() {
     {banknote: 'rubles', nominal: 50, number: 123443567},
     {banknote: 'dollar', nominal: 50, number: 12345567},
     {banknote: 'yani', nominal: 50, number: 12345667},
-    {banknote: 'dollar', nominal: 50, number: 12374567}])
+    {banknote: 'y', nominal: 50, number: 12345667},
+    {banknote: 'dollar', nominal: 50, number: 12374567},
+    {banknote: 'tengy', nominal: 50, number: 123746567}])
 
 
   return (

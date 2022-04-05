@@ -8,32 +8,55 @@ type CurrencyFilterType = {
 
 export const CurrencyFilter: React.FC<CurrencyFilterType> = ({state}) => {
 
-    const [filter, useFilter] = useState('rubles')
 
 
-    let filteredState = state.filter((currency: CurrencyType) => currency.banknote === filter)
+    let banknotes = state.map((el: CurrencyType) => el.banknote)
+
+    let banknotesFiltered = banknotes.reduce((acc: string[], el: string) =>
+        acc.includes(el) ? [...acc] : [...acc, el], [] as Array<string>)
+
+    const [filter, useFilter] = useState('all')
+    let [count,useCount]= useState(0)
+
+    let useOnChangeFilter = () => {
+        debugger
+        useFilter(banknotesFiltered[count])
+        useCount(count=count+1)
+
+        if(banknotesFiltered.length<count){
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            useCount(0)
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            useFilter('all')
+
+        }else {
+
+            }
+
+
+
+
+
+    }
+
+
+    let filteredState = state.filter((currency: CurrencyType) =>
+        filter === 'all' ? true : currency.banknote === filter)
 
 
     let mappedFilteredState = filteredState.map((currencyEl: CurrencyType, index) => <div
-        key={index}>{currencyEl.banknote}</div>)
+        key={index}>{currencyEl.banknote} {currencyEl.nominal}</div>)
+    //переменная с итерацией по объекту State в качестве значения
 
-    const useSetFilter = () => {
-
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-         if(filter === 'rubles'){useFilter('dollar')}
-         // eslint-disable-next-line react-hooks/rules-of-hooks
-        else if (filter === 'dollar'){useFilter('yani')}
-         // eslint-disable-next-line react-hooks/rules-of-hooks
-        else if(filter === 'yani'){useFilter('rubles')}
-        else {return true}
-
-    }
 
     return (
         <div>
             <div>{mappedFilteredState}</div>
+
             <CustomButton currency={filter}
-                          callBackButton={useSetFilter}/>
+                          callBackButton={useOnChangeFilter}
+            />
+
         </div>
     )
 }

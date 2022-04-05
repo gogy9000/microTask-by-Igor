@@ -1,14 +1,15 @@
-import React, {useState} from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 
 type CustomButtonPropsType = {
     currency: string
-    callBackButton: () => true|undefined
+    callBackButton: ()=>void
 }
 export const CustomButton: React.FC<CustomButtonPropsType> = ({currency, callBackButton}) => {
     const [color, useColor] = useState('gray')
 
     const setCurrency = () => {
         callBackButton()
+
     }
 
     return (
