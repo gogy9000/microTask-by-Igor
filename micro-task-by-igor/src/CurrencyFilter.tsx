@@ -8,45 +8,40 @@ type CurrencyFilterType = {
 
 export const CurrencyFilter: React.FC<CurrencyFilterType> = ({state}) => {
 
-
-
     let banknotes = state.map((el: CurrencyType) => el.banknote)
+    //эта штука создает массив названий валют
 
     let banknotesFiltered = banknotes.reduce((acc: string[], el: string) =>
-        acc.includes(el) ? [...acc] : [...acc, el], [] as Array<string>)
+        acc.includes(el) ? [...acc] : [...acc, el], ['all'] as Array<string>)
+    //эта штука создает массив названий валют, по одному элементу для каждой валюты
+    // для дальнейшего использования его при фильтрации стейта
 
     const [filter, useFilter] = useState('all')
-    let [count,useCount]= useState(0)
+    //этот хук хранит в себе режимы фильтрации в виде строк
+
+    let [count,useCount]= useState(1)
+    // это счетчик который нужен для переключения режимов фильтра при нажатии кнопки
+
 
     let useOnChangeFilter = () => {
-        debugger
-        useFilter(banknotesFiltered[count])
+        let index= count % banknotesFiltered.length
+        //эта очень полезная штука которая зацикливает счетчик так, чтобы он
+        //обнулялся при достижении конечного индекса в массиве названий валют для фильтра
         useCount(count=count+1)
-
-        if(banknotesFiltered.length<count){
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            useCount(0)
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            useFilter('all')
-
-        }else {
-
-            }
-
-
-
-
-
+        //тут все понятно
+        useFilter(banknotesFiltered[index])
+        //тут сохраняется название валюты в хуке хранения режимов фильтрации
     }
+    // это типа кастомный хук который срабатывает при нажатии на кнопку
 
 
     let filteredState = state.filter((currency: CurrencyType) =>
-        filter === 'all' ? true : currency.banknote === filter)
-
+         filter==='all'? true : currency.banknote === filter)
+    //здесь фильтруется стейт в зависимости от сохраненного значения в хуке с режимом фильтрации
 
     let mappedFilteredState = filteredState.map((currencyEl: CurrencyType, index) => <div
         key={index}>{currencyEl.banknote} {currencyEl.nominal}</div>)
-    //переменная с итерацией по объекту State в качестве значения
+    //эта штука ссылается на проитерированый и отфильтрованый стейт который отрисовывается ниже
 
 
     return (
